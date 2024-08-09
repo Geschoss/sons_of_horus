@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "lib": ["es2023"],
+        "module": "node16",
+        "target": "es2022",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "allowJs": true,
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "typeRoots": ["./node_modules/@types"]
+    },
+    "exclude": ["node_modules", "lib"]
+}
