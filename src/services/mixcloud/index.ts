@@ -1,14 +1,8 @@
-import path from 'node:path';
-import serveStatic from 'serve-static';
+import { releases } from 'services/mixcloud/db';
 import { Route } from 'shared/types/common';
 
-export const mixcloudRoute: Route = ({ app, env }) => {
-    app.get('/mixcloud', function (request, reply) {
-        reply.send({ hello: 'mixcloud' });
+export const mixcloudRoute: Route = ({ app, env, logger }) => {
+    app.get('/mixcloud/releases', function (request, reply) {
+        reply.send({ releases });
     });
-
-    app.use(
-        '/mixcloud/files',
-        serveStatic(path.join(env.__dirname, 'public/mixcloud'))
-    );
 };

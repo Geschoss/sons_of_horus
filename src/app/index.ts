@@ -1,4 +1,5 @@
 import path from 'node:path';
+import cors from 'cors';
 import express from 'express';
 import { routes } from 'app/routes';
 import { createAppLogger, createReqLog } from 'shared/logger';
@@ -14,6 +15,7 @@ export const init = async function () {
     };
 
     app.use(createReqLog(logger));
+    app.use(cors());
 
     routes.forEach((route) => {
         route({ app, logger, env });
