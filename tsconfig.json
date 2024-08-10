@@ -1,16 +1,15 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "lib": ["es2023"],
-        "module": "node16",
-        "target": "es2022",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true,
-        "allowJs": true,
-        "outDir": "./lib",
-        "rootDir": "./src",
-        "typeRoots": ["./node_modules/@types"]
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["*"]
     },
-    "exclude": ["node_modules", "lib"]
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "exclude": ["node_modules", "lib"]
 }

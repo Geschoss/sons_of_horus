@@ -1,19 +1,25 @@
-import Hapi, { Server } from '@hapi/hapi';
+import path from 'node:path';
+import express from 'express';
+import { routes } from 'app/routes';
+import { createAppLogger, createReqLog } from 'shared/logger';
 
-export let server: Server;
+export const init = async function () {
+    const __dirname = path.resolve(path.dirname(''));
 
-export const init = async function (): Promise<Server> {
-    server = Hapi.server({
-        port: process.env.PORT || 3000,
-        host: '0.0.0.0',
+    const app = express();
+    const port = 3000;
+    const logger = createAppLogger();
+    const env = {
+        __dirname,
+    };
+
+    app.use(createReqLog(logger));
+
+    routes.forEach((route) => {
+        route({ app, logger, env });
     });
 
-    // Routes will go here
-
-    return server;
-};
-
-export const start = async function (): Promise<void> {
-    console.log(`Listening on ${server.settings.host}:${server.settings.port}`);
-    return server.start();
+    app.listen(port, function () {
+        console.log(`Example app listening on port ${port}`);
+    });
 };
