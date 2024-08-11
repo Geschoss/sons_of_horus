@@ -9,6 +9,6 @@ export const youtubeRoute: Route = ({ app, env }) => {
 
     app.use(
         '/youtube/files',
-        serveStatic(path.join(env.__dirname, 'public/youtube'))
+        serveStatic(path.join(env.dirname, 'public/youtube'))
     );
 };

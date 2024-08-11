@@ -3,6 +3,7 @@ import { Route } from 'shared/types/common';
 
 export const mixcloudRoute: Route = ({ app, env, logger }) => {
     app.get('/mixcloud/releases', function (request, reply) {
+        logger.info('/mixcloud/releases');
         reply.send({ releases });
     });
 };

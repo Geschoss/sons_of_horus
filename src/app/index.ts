@@ -1,27 +1,36 @@
 import path from 'node:path';
 import cors from 'cors';
 import express from 'express';
+import dotenv from 'dotenv';
 import { routes } from 'app/routes';
-import { createAppLogger, createReqLog } from 'shared/logger';
+
+import { createAppLogger, loggerMiddleware } from 'shared/logger';
+import { errorHandlerMiddleware, failByPrecentMiddleware } from 'app/errors';
 
 export const init = async function () {
-    const __dirname = path.resolve(path.dirname(''));
+    dotenv.config();
 
-    const app = express();
-    const port = 3000;
-    const logger = createAppLogger();
     const env = {
-        __dirname,
+        port: parseInt(process.env.PORT, 10) || 3000,
+        dirname: path.resolve(path.dirname('')),
+        failByPrecent: parseInt(process.env.FAIL_BY_PRECENT, 10) || 10,
     };
 
-    app.use(createReqLog(logger));
+    const app = express();
+    const logger = createAppLogger();
+
     app.use(cors());
+    app.use(loggerMiddleware(logger));
+
+    app.use(failByPrecentMiddleware(env.failByPrecent));
+
+    app.use(errorHandlerMiddleware(logger));
 
     routes.forEach((route) => {
         route({ app, logger, env });
     });
 
-    app.listen(port, function () {
-        console.log(`Example app listening on port ${port}`);
+    app.listen(env.port, function () {
+        console.log(`Example app listening on port ${env.port}`);
     });
 };
