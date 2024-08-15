@@ -7,7 +7,7 @@ export const mixcloudRoute: Route = ({ app, env, logger }) => {
         async function (request, reply) {
             let query = request.query;
 
-            let page = parseInt(query.page || 10, 0);
+            let page = parseInt(query.page || 0, 0);
             let items_per_page = parseInt(query.items_per_page || 10, 10);
 
             const releases = await fetchReleases(items_per_page, page);
