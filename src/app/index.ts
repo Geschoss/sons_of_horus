@@ -4,28 +4,32 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { routes } from 'app/routes';
 import { Server } from 'socket.io';
-
 import { createAppLogger, loggerMiddleware } from 'shared/logger';
 import { errorHandlerMiddleware, failByPrecentMiddleware } from 'app/errors';
+import { createServer } from 'node:http';
 
 export const init = async function () {
     dotenv.config();
 
+    const corsOptions = {
+        origin: ['http://localhost:3000'],
+        credentials: true,
+    };
+
     const env = {
-        port: parseInt(process.env.PORT, 10) || 3001,
-        ws_port: parseInt(process.env.WS_PORT, 10) || 4000,
+        port: parseInt(process.env.PORT, 10) || 4000,
         dirname: path.resolve(path.dirname('')),
         failByPrecent: parseInt(process.env.FAIL_BY_PRECENT, 10) || 10,
     };
 
     const app = express();
-    const logger = createAppLogger();
-
-    const io = new Server({
-        cors: {
-            origin: 'http://localhost:3000',
-        },
+    const server = createServer(app);
+    const io = new Server(server, {
+        cors: corsOptions,
+        serveClient: false,
     });
+
+    const logger = createAppLogger();
 
     app.use(cors());
     app.use(loggerMiddleware(logger));
@@ -38,9 +42,7 @@ export const init = async function () {
         route({ app, logger, env, io });
     });
 
-    app.listen(env.port, function () {
+    server.listen(env.port, function () {
         console.log(`Example app listening on port ${env.port}`);
     });
-
-    io.listen(env.ws_port);
 };
