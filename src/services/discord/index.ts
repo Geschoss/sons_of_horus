@@ -1,12 +1,5 @@
 import { Route } from 'shared/types/common';
 
-const rooms = {
-    1: {
-        id: 1,
-        users: [],
-    },
-};
-
 export const discordRoute: Route = ({ io }) => {
     io.on('connection', (socket) => {
         socket.on('output message', (msg) => {
